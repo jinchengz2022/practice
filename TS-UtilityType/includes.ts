@@ -1,0 +1,1 @@
+type MyIncludes<T extends unknown[], K> = T[number] extends K ? true : false;
