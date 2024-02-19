@@ -32,6 +32,28 @@ async function asyncPool({ items, limit }) {
   return Promise.all(promises);
 }
 
+const testPool = async ({items, limit}) => {
+  const pool = new Set();
+  const promises = [];
+
+  for(let k of items) {
+    const promise = k();
+
+    pool.add(promise);
+    promises.push(promise)
+
+    const clean = () => pool.delete(promise)
+
+    promise.then(clean, clean)
+
+    if(pool.size >= limit) {
+      await Promise.race(pool)
+    }
+  }
+
+  return Promise.all(promises)
+}
+
 const pool = {
   items: [
     () => sleep(1, "吃饭"),

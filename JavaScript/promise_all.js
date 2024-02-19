@@ -63,6 +63,29 @@ Promise.prototype.all = function (arr) {
   });
 };
 
+const a = (promiseArr) => {
+  const resultArr = [];
+
+  return new Promise((res, rej) => {
+    function helper(result, idx) {
+      resultArr.push(result);
+      if(idx === promiseArr.length - 1) {
+        return res(resultArr)
+      }
+    }
+
+    for(let k = 0; k < promiseArr.length; k++) {
+      promiseArr[k]
+      .then((result) => {
+        helper(result, k)
+      })
+      .catch((error) => {
+        return rej(error)
+      })
+    }
+  })
+}
+
 const all = Promise.all(pools);
 
 all.then((r) => {
