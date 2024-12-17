@@ -6,49 +6,51 @@ const list = [
   { id: 5, name: "部门5", pid: 4 },
 ];
 
-function tree() {
-  const map = new Map(list.map((i) => [i.id, i.pid]));
-  const result = [];
+function arrToTree(arr) {
+  const map = new Map(arr.map((i) => [i.id, i]));
 
-  list.forEach((i) => {
-    const pid = map.get(i.pid);
+  let result;
 
-    if (pid) {
-      if (i?.children) {
-        i.children.push(i);
-      } else {
-        i.children = [];
-      }
+  arr.forEach((k) => {
+    const ele = map.get(k.pid);
+    if (!ele) {
+      result = k;
     } else {
-      result.push([i]);
+      if (!ele.children) {
+        ele.children = [k];
+      } else {
+        ele.children.push(k);
+      }
     }
   });
 
   return result;
 }
 
-function float_tree() {
-  const map = new Map(list.map((i) => [i.id, i]));
-  const result = {};
+function findDeep(value, deep = 1) {
+  if (Array.isArray(value) && value.length === 0) {
+    return;
+  }
 
-  list.forEach((i) => {
-    const parent = map.get(i.pid);
+  if (Array.isArray(value)) {
+    value.forEach((i) => {
+      i.deep = deep;
 
-    if (parent) {
-      if (parent.children) {
-        parent.children = [...parent.children, i];
-        // result.set(i.pid, [...result.get(i.pid), i]);
-      } else {
-        parent.children = [i];
-        // result.set(i.pid, [i]);
+      if (i.children) {
+        findDeep(i.children, deep + 1);
       }
-    } else {
-      result[i.id] = i;
+    });
+  } else {
+    value.deep = deep;
+    if (value.children) {
+      findDeep(value.children, deep + 1);
     }
-  });
+  }
 
-  return result;
+  return value;
 }
+
+const result = findDeep(arrToTree(list));
 
 function tree_list() {
   const result = [];
@@ -69,6 +71,4 @@ function tree_list() {
   console.log(result);
 }
 
-console.log(float_tree());
-
-const work = new Worker("work.js");
+console.log(result);

@@ -1,7 +1,7 @@
 let isMount = true;
-let workInProgressHook = null;
+let workInProgressHook: any = null;
 
-let fiber = {
+let fiber: any = {
   memorizeState: null,
   stateNode: () => {},
 };
@@ -17,10 +17,10 @@ function run() {
 function dispatchAction(queue: Record<string, any>, action: unknown) {
   const update = {
     action,
-    next: null
+    next: null as any,
   };
 
-  if(queue.pending === null) {
+  if (queue.pending === null) {
     update.next = update;
   } else {
     update.next = queue.pending.next;
@@ -58,19 +58,19 @@ export function useState(initialState: unknown) {
 
   let baseState = hook.memorizeState;
 
-  if(hook.queue.pending) {
+  if (hook.queue.pending) {
     let firstUpdate = hook.queue.pending.next;
 
     do {
       const action = firstUpdate.action;
       baseState = action(baseState);
       firstUpdate = firstUpdate.next;
-    } while(firstUpdate !== hook.queue.pending.next);
+    } while (firstUpdate !== hook.queue.pending.next);
 
     hook.queue.pending = null;
   }
 
   hook.memorizeState = baseState;
 
-  return [baseState, dispatchAction.bind(null, hook.queue)]
+  return [baseState, dispatchAction.bind(null, hook.queue)];
 }

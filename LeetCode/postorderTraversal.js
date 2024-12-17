@@ -1,4 +1,4 @@
-// left root right
+// left right root
 var postorderTraversal = function (root) {
   const result = [];
     const stack1 = [];
@@ -24,3 +24,10 @@ var postorderTraversal = function (root) {
 
     return result;
 };
+
+
+function helper(result, root) {
+    helper(result, root.left)
+    result.push(root.val)
+    helper(result, root.right)
+}

@@ -1,4 +1,4 @@
-// left  right root
+// left root right
 var inorderTraversal = function(root) {
   const res = [];
   const stk = [];
