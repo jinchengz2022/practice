@@ -34,28 +34,6 @@ function currying(fn) {
     }
   };
 }
-// let addCurry = currying(add)
-// console.log(addCurry(1)(2)(3)(4, 5)())  //15
-// console.log(addCurry(1)(2)(3, 4, 5)())  //15
-// console.log(addCurry(1)(2, 3, 4, 5)())  //15
-
-function curry1(fn) {
-  let arg = [];
-  return function temp(...args) {
-    if (args.length) {
-      arg = [...arg, ...args];
-      return temp;
-    } else {
-      const result = fn.apply(this, arg);
-      arg = [];
-      return result;
-    }
-  };
-}
-
-function sum(a, b) {
-  return a + b;
-}
 
 var fn = currying(add);
 
@@ -63,4 +41,20 @@ var fn = currying(add);
 // fn("a", "b")("c") // ["a", "b", "c"]
 // fn("a")("b")("c") // ["a", "b", "c"]
 // fn("a")("b", "c") // ["a", "b", "c"]
-console.log(fn(3)(2)(1)(22)());
+// console.log(fn(1,2,3,4,5)(5)());
+
+function add1(...args) {
+  function innerAdd(...innerArgs) {
+    args.push(...innerArgs);
+    return innerAdd;
+  }
+
+  innerAdd.getValue = function() {
+    return args.reduce((acc, curr) => acc + curr, 0);
+  };
+
+  return innerAdd;
+}
+
+console.log(add1(1).getValue());
+console.log(add1(1,3,4)(2).getValue());

@@ -3,17 +3,14 @@ function execute(tasks) {
   return tasks.reduce(
     (previousPromise, currentPromise) =>
       previousPromise.then((resultList) => {
-        return new Promise((resolve) => {
-          currentPromise
-            .then((result) => {
-              resolve(resultList.concat(result));
-            })
-            .catch(() => {
-              resolve(resultList.concat("error"));
-            });
+        return new Promise(() => {
+          currentPromise.then((res) => {
+            resultList.push(res);
+            resolve(resultList);
+          });
         });
-      })
-    // []
+      }),
+    Promise.resolve([])
   );
 }
 
@@ -30,9 +27,11 @@ const Task = function (result, isSuccess = true, delay) {
   });
 };
 
-execute([Task(["A"], true, 1), Task("B", true, 2), Task("C", true, 3), Task("D",  true, 4)]).then((r) => {
-  console.log(r);
-});
+execute([Task("A", true, 1), Task("B", true, 2), Task("C", true, 6)]).then(
+  (r) => {
+    console.log(r);
+  }
+);
 
 async function cPromise(pool, limit = 3, start = 0) {
   let resultTask = 0;

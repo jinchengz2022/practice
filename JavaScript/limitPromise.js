@@ -3,7 +3,7 @@ function sleep(delay, content) {
     // console.log(content, 'start');
 
     setTimeout(() => {
-      // console.log(content, "end");
+      console.log(content, "end");
       res({ delay, content });
     }, delay * 1000);
   });
@@ -29,34 +29,31 @@ async function asyncPool({ items, limit }) {
     }
   }
 
-  return Promise.all(promises);
+  return Promise.all(pool);
 }
 
-const testPool = async ({items, limit}) => {
+const limitReq = async ({items, limit}) => {
   const pool = new Set();
-  const promises = [];
 
-  for(let k of items) {
-    const promise = k();
+  for(const k of items) {
+    const p = k();
+    pool.add(p);
 
-    pool.add(promise);
-    promises.push(promise)
+    const clean = () => pool.delete(p);
 
-    const clean = () => pool.delete(promise)
-
-    promise.then(clean, clean)
+    p.then(clean, clean);
 
     if(pool.size >= limit) {
-      await Promise.race(pool)
+      Promise.race(pool);
     }
   }
 
-  return Promise.all(promises)
+  return Promise.all(pool)
 }
 
 const pool = {
   items: [
-    () => sleep(1, "吃饭"),
+    () => sleep(3, "吃饭"),
     () => sleep(2, "睡觉"),
     () => sleep(3, "游戏"),
     () => sleep(8, "运动"),

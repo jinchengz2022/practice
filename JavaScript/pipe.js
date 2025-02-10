@@ -19,9 +19,16 @@ const pipe = (value) => {
 
 const double = (n) => n + 10;
 const pow = (n) => n * 10;
+const many = (n1, n2, n3) => n1 + n2 + n3;
 
 // reduce
 const pipeAry = [double, pow];
-const _pipe = (num) => pipeAry.reduce((pre, cur) => cur(pre), num);
+const _pipe1 = (num) => pipeAry.reduce((pre, cur) => cur(pre), num);
+const _pipe2 = (...fns) => {
+  return function (param) {
+    return fns.reduce((num, fn) => fn(num), param);
+  };
+};
 
-console.log(_pipe(2));
+const test = _pipe2(double, pow);
+console.log(test(2));

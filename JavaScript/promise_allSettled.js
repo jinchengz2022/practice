@@ -15,9 +15,32 @@ Promise.prototype.allSettled = function (arr) {
           _inner(k, r);
         },
         (err) => {
-          _inner(err, r);
+          _inner(k, err);
         }
       );
+    }
+  });
+};
+
+const alls = (ary) => {
+  const result = [];
+
+  return new Promise((res) => {
+    function inner(index, reqRes) {
+      result.push(reqRes);
+      if (index === ary.length - 1) {
+        return res(result);
+      }
+    }
+
+    for (let i = 0; i < ary.length; i++) {
+      ary[k]
+        .then((value) => {
+          inner(i, value);
+        })
+        .catch((e) => {
+          inner(i, e);
+        });
     }
   });
 };

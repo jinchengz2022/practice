@@ -15,29 +15,6 @@ const pools = [
   sleep("inter", 3),
   sleep("error", 3),
 ];
-// function my_promiseAll(arr) {
-//   const result = [];
-
-//   return new Promise(async (res, rej) => {
-//     function inner_fn(idx, date) {
-//       result.push(date);
-//       if (idx === arr.length - 1) {
-//         return res(result);
-//       }
-//     }
-//     for (let k = 0; k < arr.length; k++) {
-//       // arr[k]() ---> 请求
-//       arr[k]().then(
-//         (singleRes) => {
-//           inner_fn(k, singleRes);
-//         },
-//         (err) => {
-//           return rej(err);
-//         }
-//       );
-//     }
-//   });
-// }
 
 Promise.prototype.all = function (arr) {
   const result = [];
@@ -63,32 +40,30 @@ Promise.prototype.all = function (arr) {
   });
 };
 
-const a = (promiseArr) => {
-  const resultArr = [];
+const alltest = (ary) => {
+  const result = [];
 
   return new Promise((res, rej) => {
-    function helper(result, idx) {
-      resultArr.push(result);
-      if(idx === promiseArr.length - 1) {
-        return res(resultArr)
+    function innerFC(index, req) {
+      result.push(req);
+      if (index === ary.length - 1) {
+        return res(result);
       }
     }
-
-    for(let k = 0; k < promiseArr.length; k++) {
-      promiseArr[k]
-      .then((result) => {
-        helper(result, k)
-      })
-      .catch((error) => {
-        return rej(error)
-      })
+    try {
+      for (let k = 0; k < ary.length; k++) {
+        ary[k]
+          .then((value) => {
+            innerFC(k, value);
+          })
+          .catch((e) => {
+            rej(e);
+          });
+      }
+    } catch (error) {
+      rej(error);
     }
-  })
-}
+  });
+};
 
 const all = Promise.all(pools);
-
-all.then((r) => {
-  console.log(r);
-});
-

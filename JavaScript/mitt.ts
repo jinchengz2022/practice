@@ -42,3 +42,45 @@ const mitt = (all: Map<string | symbol, Array<Function>>) => {
     },
   };
 };
+
+const m = (map) => {
+  const all = map || new Map();
+
+  return {
+    all,
+    on: (type, fn) => {
+      const event = all.get(type);
+
+      if (event) {
+        all.set(type, [...event, fn]);
+      } else {
+        all.set(type, [fn]);
+      }
+    },
+    off: (type, fn) => {
+      const event = all.get(type);
+
+      if (event) {
+       event.splice(event.indexOf(fn) >>> 0, 1)
+      } else {
+        all.set(type, []);
+      }
+    },
+    emit: (type, params) => {
+      const event = all.get(type);
+
+      if (event) {
+        event.slice().forEach((i) => {
+          i(params);
+        });
+      }
+
+      const x = map.get("*");
+      if (x) {
+        x.slice().forEach((i) => {
+          i(params);
+        });
+      }
+    },
+  };
+};

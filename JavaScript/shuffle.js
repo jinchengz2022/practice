@@ -1,5 +1,5 @@
 // 打乱数组
-function shuffle(ary) {
+function shuffle1(ary) {
   let i = ary.length;
 
   while(i) {
@@ -10,4 +10,10 @@ function shuffle(ary) {
   return ary;
 }
 
-console.log(shuffle([1,2,3,4,5,6,7]));
+function shuffle2(ary) {
+  const res = ary.sort(() => Math.random() - 0.5);
+
+  return res
+}
+
+console.log(shuffle2([1,2,3,4,5,6,7]));

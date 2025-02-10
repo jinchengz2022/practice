@@ -17,4 +17,4 @@ function red(money, count) {
   return reuslt;
 }
 
-console.log(red(100, 3))
+console.log(red(100, 3));

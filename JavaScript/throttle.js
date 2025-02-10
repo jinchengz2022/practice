@@ -1,14 +1,23 @@
 function throttle(fn, delay = 800) {
-  let timer = null;
+  let flag = false;
 
-  return function (...args) {
-    if(!timer) {
-      fn(...args);
+  return function () {
+    if(!flag) {
+      fn.apply(this,arguments);
+      flag = true;
+      setTimeout(() => {
+        flag = false;
+      }, timer);
     }
-
-    timer = setTimeout(() => {
-      clearTimeout(timer);
-      timer = null;
-    }, delay);
   }
 }
+
+function debounce(fn, timer) {
+  let t = null;
+
+  t = setTimeout(() => {
+    
+  }, timer);
+  return throttle(fn, timer)
+}
+

@@ -5,7 +5,7 @@ Promise.prototype.any = function (arr) {
     function _inner(idx, data) {
       result.push(data);
       if (idx === arr.length - 1) {
-        return rej('没有promise成功');
+        return rej(result);
       }
     }
 
@@ -15,7 +15,7 @@ Promise.prototype.any = function (arr) {
           return res(r);
         },
         (err) => {
-          _inner(err, r);
+          _inner(k, err);
         }
       );
     }
