@@ -13,6 +13,3 @@ var inorderTraversal = function(root) {
   }
   return res;
 };
-
-const a = new Proxy({}, {});
-const b = Reflect({})

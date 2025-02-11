@@ -12,9 +12,20 @@ const result = compose(sum1, sum2)(2);
 
 console.log(result);
 
-const compose1 = (...fns) =>
-  fns.reduce(
-    (f, g) =>
+function compose1(...fns) {
+  {
+    if (fns.length === 0) {
+      return (args) => args;
+    }
+
+    if (fns.length === 1) {
+      return fns[0];
+    }
+  }
+
+  return fns.reduce(
+    (a, b) =>
       (...args) =>
-        f(g(...args))
+        a(b(args))
   );
+}
