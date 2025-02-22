@@ -12,12 +12,23 @@ function throttle(fn, delay = 800) {
   }
 }
 
-function debounce(fn, timer) {
-  let t = null;
+function t1(fn, delay = 800) {
+  let timer = null;
 
-  t = setTimeout(() => {
-    
-  }, timer);
-  return throttle(fn, timer)
+  return function() {
+    if(!timer) {
+      fn.apply(this, arguments)
+      timer = setTimeout(() => {
+        clearTimeout(timer)
+      }, delay);
+    }
+  }
 }
 
+
+function add(a, b) {
+  return a - b; 
+}
+const result = add(3, 2); 
+// 预期结果为 5，但实际结果为 1
+console.log(result); 

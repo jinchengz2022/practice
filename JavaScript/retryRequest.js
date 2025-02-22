@@ -15,3 +15,33 @@ async function retryRequest(request, limit = 3, currentNum = 1) {
     }
   }
 }
+
+function checkPaymentStatus() {
+  return new Promise((resolve) => {
+    // 模拟服务器返回支付状态
+    const statuses = ["pending", "success", "failed"];
+    const randomIndex = Math.floor(Math.random() * 3);
+    setTimeout(() => {
+      resolve(statuses[randomIndex]);
+    }, 1000);
+  });
+}
+
+async function a() {
+  const res = await checkPaymentStatus();
+  if (res === "success" || res === "failed") {
+    return res;
+  } else {
+    return a();
+  }
+}
+
+async function pollPaymentStatus(callback) {
+  // 实现逻辑
+  const res = await a();
+  callback(res);
+}
+// 示例调用
+pollPaymentStatus((status) => {
+  console.log("支付状态:", status);
+});

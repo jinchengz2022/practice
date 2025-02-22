@@ -41,6 +41,7 @@ Array.prototype.pop = function () {
 
 const arr = [1, 2, 7, 99];
 
-arr.shift(4, 5, 6, 10, 20);
+arr.unshift(4, 5, 6, 10, 20);
 
 console.log(arr);
+

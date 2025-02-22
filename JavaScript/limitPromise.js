@@ -32,10 +32,10 @@ async function asyncPool({ items, limit }) {
   return Promise.all(pool);
 }
 
-const limitReq = async ({items, limit}) => {
+const limitReq = async ({ items, limit }) => {
   const pool = new Set();
 
-  for(const k of items) {
+  for (const k of items) {
     const p = k();
     pool.add(p);
 
@@ -43,13 +43,13 @@ const limitReq = async ({items, limit}) => {
 
     p.then(clean, clean);
 
-    if(pool.size >= limit) {
+    if (pool.size >= limit) {
       Promise.race(pool);
     }
   }
 
-  return Promise.all(pool)
-}
+  return Promise.all(pool);
+};
 
 const pool = {
   items: [
@@ -63,4 +63,3 @@ const pool = {
 };
 
 asyncPool(pool);
-

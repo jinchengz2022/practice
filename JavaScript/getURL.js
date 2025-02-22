@@ -1,4 +1,10 @@
 
+const url = require('node:url')
+
+const myURL = new url.URL('https://user:pass@sub.example.com:8000/jin/c/?a=lucy&b=motonony#hashhash')
+
+console.log('myURL.searchParams', myURL.searchParams);
+
 const _getURL = () => {
   const search = new URLSearchParams(window.location.search);
   const result = {};

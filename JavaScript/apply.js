@@ -7,10 +7,9 @@ function _apply(context, args) {
 
   context.fn = this;
 
-  const result = Array.isArray(args) ? context.fn(...args) :context.fn();
+  const result = Array.isArray(args) ? context.fn(...args) : context.fn();
 
   delete context.fn;
 
   return result;
 }
-

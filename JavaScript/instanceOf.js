@@ -1,16 +1,20 @@
-function _instanceOf(l, r) {
-  const r_prototype = r.prototype;
-  let l_ptoto_ = l.__proto__;
+function _instanceOf(obj, Constructor) {
+  // 获取构造函数的 prototype 属性
+  const prototype = Constructor.prototype;
+  // 获取对象的原型对象
+  let proto = obj.__proto__;
 
-  while (true) {
-    if (r_prototype === l_ptoto_) {
-      return true;
-    }
-    if (!l_ptoto_) {
-      return false;
-    }
-    l_ptoto_ = l_ptoto_.__proto__;
+  while (proto!== null) {
+      if (proto === prototype) {
+          // 如果对象的原型链上存在构造函数的 prototype 属性，则返回 true
+          return true;
+      }
+      // 继续向上查找原型链
+      proto = proto.__proto__;
   }
+
+  // 遍历完原型链都没有找到，则返回 false
+  return false;
 }
 
-console.log(_instanceOf({ a: 1 }, { a: 2, b: 2 }));
+console.log(_instanceOf(1, Object));
